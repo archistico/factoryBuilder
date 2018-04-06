@@ -1,0 +1,21 @@
+.elemento {
+    color: darkgray;
+}
+
+.elemento .quantita {
+    color: black;
+}
+
+.elemento .nome {
+    color: black;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.elemento .vendita {
+    color: black;
+}
+
+.elemento .acquisto {
+    color: black;
+}
