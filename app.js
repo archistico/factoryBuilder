@@ -32,11 +32,15 @@ class ElementoInventario {
     }
 
     btnAdd() {
-        this.quantita += 1;
+        if(this.quantita<9999) {
+            this.quantita += 1;
+        }
     }
 
     btnRemove() {
-        this.quantita -= 1;
+        if(this.quantita>0) {
+            this.quantita -= 1;
+        }        
     }
 }
 
@@ -87,12 +91,12 @@ class Inventario {
             vendita.className = "vendita";
 
             let add = document.createElement("button");
-            add.onclick = function(){ elementoInventario.btnAdd()};
+            add.onclick = function(){ elementoInventario.btnAdd(); inventario.Visualize(); };
             add.innerHTML = "add";
             add.className = "add";
 
             let remove = document.createElement("button");
-            remove.onclick = function(){ elementoInventario.btnRemove()};
+            remove.onclick = function(){ elementoInventario.btnRemove(); inventario.Visualize(); };
             remove.innerHTML = "remove";
             remove.className = "remove";
 
@@ -107,17 +111,6 @@ class Inventario {
             app_div.appendChild(el);
         });
     }
-}
-
-function AggiungiQuantita() {
-    alert('ciao');
-    /*
-    inventario.forEach(function (elemento) {
-        if(elemento.id === id) {
-            elemento.quantita +=1;
-        }
-    });
-    */
 }
 
 let cemento = new Elemento(1, 'Cemento', 5, 4);
