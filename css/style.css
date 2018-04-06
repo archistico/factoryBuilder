@@ -1,5 +1,14 @@
+#app {
+    display: flex;
+}
+
 .elemento {
     color: darkgray;
+    padding: 5px;
+    border-style: solid;
+    border-color: cadetblue;
+    margin: 5px;
+    width: 150px;
 }
 
 .elemento .quantita {

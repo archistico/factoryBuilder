@@ -6,7 +6,7 @@ function pad(n, width, z) {
     z = z || '0';
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-  }
+}
 
 class Elemento {
     constructor(id, nome, acquisto, vendita) {
@@ -30,6 +30,14 @@ class ElementoInventario {
     toString() {
         return 'qt: ' + pad(this.quantita, 4) + ' | ' + this.elemento.toString();
     }
+
+    btnAdd() {
+        this.quantita += 1;
+    }
+
+    btnRemove() {
+        this.quantita -= 1;
+    }
 }
 
 class Inventario {
@@ -40,16 +48,76 @@ class Inventario {
     Add(elemento, quantita) {
         var elementoInventario = new ElementoInventario(elemento, quantita);
         this.inventario.push(elementoInventario);
-        bloccoInventario(elementoInventario);
     }
-
+    
     toString() {
         let risultato = '';
-        this.inventario.forEach(function(elemento) {
-            risultato+=elemento.toString()+'\n';
+        this.inventario.forEach(function (elemento) {
+            risultato += elemento.toString() + '\n';
         });
         return risultato;
     }
+    
+    Visualize() {
+        let app_div = document.getElementById("app");
+        app_div.innerHTML = null;
+
+        this.inventario.forEach(function (elementoInventario) {
+            let el = document.createElement("div");
+            el.className = "elemento";
+
+            let quantita = document.createElement("div");
+            quantita.innerHTML = pad(elementoInventario.quantita, 4);
+            quantita.className = "quantita";
+
+            let id = document.createElement("div");
+            id.innerHTML = pad(elementoInventario.elemento.id, 4);
+            id.className = "id";
+
+            let nome = document.createElement("div");
+            nome.innerHTML = elementoInventario.elemento.nome
+            nome.className = "nome";
+
+            let acquisto = document.createElement("div");
+            acquisto.innerHTML = '€ ' + elementoInventario.elemento.acquisto.toFixed(2);
+            acquisto.className = "acquisto";
+
+            let vendita = document.createElement("div");
+            vendita.innerHTML = '€ ' + elementoInventario.elemento.vendita.toFixed(2);
+            vendita.className = "vendita";
+
+            let add = document.createElement("button");
+            add.onclick = function(){ elementoInventario.btnAdd()};
+            add.innerHTML = "add";
+            add.className = "add";
+
+            let remove = document.createElement("button");
+            remove.onclick = function(){ elementoInventario.btnRemove()};
+            remove.innerHTML = "remove";
+            remove.className = "remove";
+
+            el.appendChild(quantita);
+            el.appendChild(id);
+            el.appendChild(nome);
+            el.appendChild(acquisto);
+            el.appendChild(vendita);
+            el.appendChild(add);
+            el.appendChild(remove);
+            
+            app_div.appendChild(el);
+        });
+    }
+}
+
+function AggiungiQuantita() {
+    alert('ciao');
+    /*
+    inventario.forEach(function (elemento) {
+        if(elemento.id === id) {
+            elemento.quantita +=1;
+        }
+    });
+    */
 }
 
 let cemento = new Elemento(1, 'Cemento', 5, 4);
@@ -64,49 +132,4 @@ inventario.Add(legno, 20);
 inventario.Add(ferro, 20);
 
 log(inventario.toString());
-
-function bloccoInventario(elementoInventario) {
-    let el = document.createElement("div");
-    el.className = "elemento";
-    
-    let quantita = document.createElement("div");
-    quantita.innerHTML = pad(elementoInventario.quantita,4);
-    quantita.className = "quantita";
-
-    let id = document.createElement("div");
-    id.innerHTML = pad(elementoInventario.elemento.id,4);
-    id.className = "id";
-
-    let nome = document.createElement("div");
-    nome.innerHTML = elementoInventario.elemento.nome
-    nome.className = "nome";
-
-    let acquisto = document.createElement("div");
-    acquisto.innerHTML = '€ ' + elementoInventario.elemento.acquisto.toFixed(2);
-    acquisto.className = "acquisto";
-
-    let vendita = document.createElement("div");
-    vendita.innerHTML = '€ ' + elementoInventario.elemento.vendita.toFixed(2);
-    vendita.className = "vendita";
-
-    let add = document.createElement("button");
-    add.innerHTML = "add";
-    add.className = "add";
-
-    let remove = document.createElement("button");
-    remove.innerHTML = "remove";
-    remove.className = "remove";
-
-    el.appendChild(quantita);
-    el.appendChild(id);
-    el.appendChild(nome);
-    el.appendChild(acquisto);
-    el.appendChild(vendita);
-    el.appendChild(add);
-    el.appendChild(remove);
-
-    // var t = document.createTextNode("CLICK ME");
-    // btn.appendChild(t);
-    app_div = document.getElementById("app");
-    app_div.appendChild(el);
-}
+inventario.Visualize();
