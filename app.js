@@ -32,15 +32,15 @@ class ElementoInventario {
     }
 
     btnAdd() {
-        if(this.quantita<9999) {
+        if (this.quantita < 9999) {
             this.quantita += 1;
         }
     }
 
     btnRemove() {
-        if(this.quantita>0) {
+        if (this.quantita > 0) {
             this.quantita -= 1;
-        }        
+        }
     }
 }
 
@@ -53,7 +53,7 @@ class Inventario {
         var elementoInventario = new ElementoInventario(elemento, quantita);
         this.inventario.push(elementoInventario);
     }
-    
+
     toString() {
         let risultato = '';
         this.inventario.forEach(function (elemento) {
@@ -61,7 +61,7 @@ class Inventario {
         });
         return risultato;
     }
-    
+
     Visualize() {
         let app_div = document.getElementById("app");
         app_div.innerHTML = null;
@@ -91,12 +91,12 @@ class Inventario {
             vendita.className = "vendita";
 
             let add = document.createElement("button");
-            add.onclick = function(){ elementoInventario.btnAdd(); inventario.Visualize(); };
+            add.onclick = function () { elementoInventario.btnAdd(); inventario.Visualize(); };
             add.innerHTML = "add";
             add.className = "add";
 
             let remove = document.createElement("button");
-            remove.onclick = function(){ elementoInventario.btnRemove(); inventario.Visualize(); };
+            remove.onclick = function () { elementoInventario.btnRemove(); inventario.Visualize(); };
             remove.innerHTML = "remove";
             remove.className = "remove";
 
@@ -107,16 +107,52 @@ class Inventario {
             el.appendChild(vendita);
             el.appendChild(add);
             el.appendChild(remove);
-            
+
             app_div.appendChild(el);
         });
     }
 }
 
+class Portafoglio {
+    constructor(denaro) {
+        this.denaro = denaro;
+    }
+
+    Add(denaro) {
+        this.denaro += denaro;
+    }
+
+    Remove(denaro) {
+        this.denaro -= denaro;
+    }
+
+    toString() {
+        return '€ ' + this.denaro.toFixed(2);
+    }
+
+    Visualize() {
+        let portafoglio_div = document.getElementById("portafoglio");
+        portafoglio_div.innerHTML = null;
+
+        let attuale = document.createElement("div");
+        attuale.innerHTML = this.toString();
+
+        portafoglio_div.appendChild(attuale);
+    }
+}
+
+/**
+ * Elementi
+ */
+
 let cemento = new Elemento(1, 'Cemento', 5, 4);
 let acqua = new Elemento(2, 'Acqua', 0.01, 0);
 let legno = new Elemento(3, 'Legno', 2, 1.5);
 let ferro = new Elemento(4, 'Ferro', 1.5, 1);
+
+/**
+ * Inventario
+ */
 
 let inventario = new Inventario();
 inventario.Add(cemento, 5);
@@ -124,5 +160,13 @@ inventario.Add(acqua, 100);
 inventario.Add(legno, 20);
 inventario.Add(ferro, 20);
 
-log(inventario.toString());
 inventario.Visualize();
+
+/**
+ * Portafoglio
+ */
+let portafoglio = new Portafoglio(1000);
+portafoglio.Visualize();
+
+log(portafoglio.toString());
+log(inventario.toString());
