@@ -28,3 +28,13 @@
 .elemento .acquisto {
     color: black;
 }
+
+#portafoglio {
+    font-weight: 700;
+    font-size: 2em;
+    padding: 5px;
+    border-style: solid;
+    border-color: cadetblue;
+    margin: 5px;
+    width: 150px;
+}

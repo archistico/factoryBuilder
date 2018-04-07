@@ -71,37 +71,49 @@ class Inventario {
             el.className = "elemento";
 
             let quantita = document.createElement("div");
-            quantita.innerHTML = pad(elementoInventario.quantita, 4);
+            quantita.innerHTML = 'Quantità: '+pad(elementoInventario.quantita, 4);
             quantita.className = "quantita";
 
-            let id = document.createElement("div");
-            id.innerHTML = pad(elementoInventario.elemento.id, 4);
-            id.className = "id";
+            // let id = document.createElement("div");
+            // id.innerHTML = pad(elementoInventario.elemento.id, 4);
+            // id.className = "id";
 
             let nome = document.createElement("div");
             nome.innerHTML = elementoInventario.elemento.nome
             nome.className = "nome";
 
             let acquisto = document.createElement("div");
-            acquisto.innerHTML = '€ ' + elementoInventario.elemento.acquisto.toFixed(2);
+            acquisto.innerHTML = 'Acquisto: € ' + elementoInventario.elemento.acquisto.toFixed(2);
             acquisto.className = "acquisto";
 
             let vendita = document.createElement("div");
-            vendita.innerHTML = '€ ' + elementoInventario.elemento.vendita.toFixed(2);
+            vendita.innerHTML = 'Vendita : € ' + elementoInventario.elemento.vendita.toFixed(2);
             vendita.className = "vendita";
 
             let add = document.createElement("button");
-            add.onclick = function () { elementoInventario.btnAdd(); inventario.Visualize(); };
+            add.onclick = function () { 
+                if(elementoInventario.quantita<9999) {
+                    elementoInventario.btnAdd();
+                    portafoglio.Remove(elementoInventario.elemento.acquisto); 
+                }
+                UpdateScreen(); 
+            };
             add.innerHTML = "add";
             add.className = "add";
 
             let remove = document.createElement("button");
-            remove.onclick = function () { elementoInventario.btnRemove(); inventario.Visualize(); };
+            remove.onclick = function () { 
+                if(elementoInventario.quantita>0) {
+                    elementoInventario.btnRemove(); 
+                    portafoglio.Add(elementoInventario.elemento.vendita); 
+                }                
+                UpdateScreen(); 
+            };
             remove.innerHTML = "remove";
             remove.className = "remove";
 
             el.appendChild(quantita);
-            el.appendChild(id);
+            // el.appendChild(id);
             el.appendChild(nome);
             el.appendChild(acquisto);
             el.appendChild(vendita);
@@ -168,5 +180,14 @@ inventario.Visualize();
 let portafoglio = new Portafoglio(1000);
 portafoglio.Visualize();
 
-log(portafoglio.toString());
-log(inventario.toString());
+//log(portafoglio.toString());
+//log(inventario.toString());
+
+/**
+ * Update screen value
+ */
+
+function UpdateScreen() {
+    inventario.Visualize();
+    portafoglio.Visualize();
+}
