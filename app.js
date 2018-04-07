@@ -98,8 +98,8 @@ class Inventario {
                 }
                 UpdateScreen(); 
             };
-            add.innerHTML = "add";
-            add.className = "add";
+            add.innerHTML = "+";
+            add.className = "button buttonAdd";
 
             let remove = document.createElement("button");
             remove.onclick = function () { 
@@ -109,8 +109,8 @@ class Inventario {
                 }                
                 UpdateScreen(); 
             };
-            remove.innerHTML = "remove";
-            remove.className = "remove";
+            remove.innerHTML = "-";
+            remove.className = "button buttonRemove";
 
             el.appendChild(quantita);
             // el.appendChild(id);
