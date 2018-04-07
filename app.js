@@ -161,6 +161,7 @@ let cemento = new Elemento(1, 'Cemento', 5, 4);
 let acqua = new Elemento(2, 'Acqua', 0.01, 0);
 let legno = new Elemento(3, 'Legno', 2, 1.5);
 let ferro = new Elemento(4, 'Ferro', 1.5, 1);
+let sabbia = new Elemento(5, 'Sabbia', 1, 0.8);
 
 /**
  * Inventario
@@ -171,6 +172,7 @@ inventario.Add(cemento, 5);
 inventario.Add(acqua, 100);
 inventario.Add(legno, 20);
 inventario.Add(ferro, 20);
+inventario.Add(sabbia, 10);
 
 inventario.Visualize();
 
