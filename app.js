@@ -169,20 +169,29 @@ class Manufatto {
         this.nome = nome;
         this.vendita = vendita;
         this.parti = parti;
+        this.listaparti = [];
         this.operazione = 0;
         this.operazioni = 0;
 
         let operazioni = 0;
+        let listaparti = [];
         this.parti.forEach(function (parte) {
             operazioni += parte.quantita;
-        })
+            for(let i=0; i<parte.quantita; i++) {
+                listaparti.push(parte);
+            }
+        });
+        this.listaparti = listaparti;
         this.operazioni = operazioni;
     }
 
     btnOperazione() {
+        inventario.inventario.find(x=> x.elemento.nome === this.listaparti[this.operazione].elemento.nome).quantita-=1;
+
         this.operazione += 1;
         if (this.operazione > this.operazioni-1) {
             this.operazione = 0;
+            inventarioManufatti.inventario.find(x=> x.elemento.nome === this.nome).quantita+=1;
         }
     }
 }
