@@ -71,7 +71,7 @@ class Inventario {
             el.className = "elemento";
 
             let quantita = document.createElement("div");
-            quantita.innerHTML = 'Quantità: '+pad(elementoInventario.quantita, 4);
+            quantita.innerHTML = 'Quantità: ' + pad(elementoInventario.quantita, 4);
             quantita.className = "quantita";
 
             // let id = document.createElement("div");
@@ -91,23 +91,23 @@ class Inventario {
             vendita.className = "vendita";
 
             let add = document.createElement("button");
-            add.onclick = function () { 
-                if(elementoInventario.quantita<9999) {
+            add.onclick = function () {
+                if (elementoInventario.quantita < 9999) {
                     elementoInventario.btnAdd();
-                    portafoglio.Remove(elementoInventario.elemento.acquisto); 
+                    portafoglio.Remove(elementoInventario.elemento.acquisto);
                 }
-                UpdateScreen(); 
+                UpdateScreen();
             };
             add.innerHTML = "+";
             add.className = "button buttonAdd";
 
             let remove = document.createElement("button");
-            remove.onclick = function () { 
-                if(elementoInventario.quantita>0) {
-                    elementoInventario.btnRemove(); 
-                    portafoglio.Add(elementoInventario.elemento.vendita); 
-                }                
-                UpdateScreen(); 
+            remove.onclick = function () {
+                if (elementoInventario.quantita > 0) {
+                    elementoInventario.btnRemove();
+                    portafoglio.Add(elementoInventario.elemento.vendita);
+                }
+                UpdateScreen();
             };
             remove.innerHTML = "-";
             remove.className = "button buttonRemove";
@@ -153,6 +153,90 @@ class Portafoglio {
     }
 }
 
+class Manufatto {
+    constructor(nome, vendita, parti) {
+        this.nome = nome;
+        this.vendita = vendita;
+        this.parti = parti;
+    }
+
+    toString() {
+        let parti = '';
+        this.parti.forEach(function (parte) {
+            log(parte);
+        });
+        return 'nome: ' + pad(this.nome, 4) + ' \t| prezzo di vendita: € ' + pad(this.vendita.toFixed(2), 4);
+    }
+}
+
+class InventarioManufatti {
+    constructor() {
+        this.inventario = [];
+    }
+
+    Add(elemento, quantita) {
+        var elementoInventario = new ElementoInventario(elemento, quantita);
+        this.inventario.push(elementoInventario);
+    }
+
+    toString() {
+        let risultato = '';
+        this.inventario.forEach(function (elemento) {
+            risultato += elemento.toString() + '\n';
+        });
+        return risultato;
+    }
+
+    Visualize() {
+        let manufatti_div = document.getElementById("manufatti");
+        manufatti_div.innerHTML = null;
+
+        this.inventario.forEach(function (manufatto) {
+            let el = document.createElement("div");
+            el.className = "elemento";
+
+            let quantita = document.createElement("div");
+            quantita.innerHTML = 'Quantità: ' + pad(manufatto.quantita, 4);
+            quantita.className = "quantita";
+
+            let nome = document.createElement("div");
+            nome.innerHTML = manufatto.elemento.nome
+            nome.className = "nome";
+
+            let vendita = document.createElement("div");
+            vendita.innerHTML = 'Vendita : € ' + manufatto.elemento.vendita.toFixed(2);
+            vendita.className = "vendita";
+
+            // Parti
+            let parti = document.createElement("div");
+            manufatto.elemento.parti.forEach(function(parte) {
+                parti.innerHTML += parte.elemento.nome + ': ' + parte.quantita.toFixed(0)+'<br>';
+            })
+            parti.className = 'parti';
+
+            let add = document.createElement("button");
+            add.onclick = function () { 
+                if(inventarioManufatti.quantita<9999) {
+                    //elementoInventario.btnAdd();
+                    //portafoglio.Remove(elementoInventario.elemento.acquisto); 
+                }
+                UpdateScreen(); 
+            };
+
+            add.innerHTML = "Costruisci";
+            add.className = "button buttonAdd";
+
+            el.appendChild(quantita);
+            el.appendChild(nome);
+            el.appendChild(vendita);
+            el.appendChild(parti);
+            el.appendChild(add);
+
+            manufatti_div.appendChild(el);
+        });
+    }
+}
+
 /**
  * Elementi
  */
@@ -162,6 +246,7 @@ let acqua = new Elemento(2, 'Acqua', 0.01, 0);
 let legno = new Elemento(3, 'Legno', 2, 1.5);
 let ferro = new Elemento(4, 'Ferro', 1.5, 1);
 let sabbia = new Elemento(5, 'Sabbia', 1, 0.8);
+let chiodi = new Elemento(6, 'Chiodi', 3, 0.01);
 
 /**
  * Inventario
@@ -173,6 +258,7 @@ inventario.Add(acqua, 100);
 inventario.Add(legno, 20);
 inventario.Add(ferro, 20);
 inventario.Add(sabbia, 10);
+inventario.Add(chiodi, 100);
 
 inventario.Visualize();
 
@@ -186,10 +272,33 @@ portafoglio.Visualize();
 //log(inventario.toString());
 
 /**
+ * Manufatti
+ */
+
+let scatolaLegno = new ElementoInventario(legno, 6);
+let scatolaChiodi = new ElementoInventario(chiodi, 6);
+let calcestruzzoCemento = new ElementoInventario(cemento, 2);
+let calcestruzzoAcqua = new ElementoInventario(acqua, 1);
+let calcestruzzoSabbia = new ElementoInventario(sabbia, 3);
+
+let scatola = new Manufatto('Scatola', 100, [scatolaLegno, scatolaChiodi]);
+let calcestruzzo = new Manufatto('Calcestruzzo', 30, [calcestruzzoCemento, calcestruzzoAcqua, calcestruzzoSabbia]);
+
+/**
+ * Inventario Manufatti
+ */
+
+let inventarioManufatti = new InventarioManufatti();
+inventarioManufatti.Add(scatola, 0);
+inventarioManufatti.Add(calcestruzzo, 0);
+inventarioManufatti.Visualize();
+
+/**
  * Update screen value
  */
 
 function UpdateScreen() {
     inventario.Visualize();
     portafoglio.Visualize();
+    inventarioManufatti.Visualize();
 }

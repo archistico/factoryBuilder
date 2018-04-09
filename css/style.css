@@ -2,6 +2,10 @@
     display: flex;
 }
 
+#manufatti {
+    display: flex;
+}
+
 .elemento {
     color: darkgray;
     padding: 5px;
