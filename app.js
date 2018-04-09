@@ -177,21 +177,28 @@ class Manufatto {
         let listaparti = [];
         this.parti.forEach(function (parte) {
             operazioni += parte.quantita;
-            for(let i=0; i<parte.quantita; i++) {
+            for (let i = 0; i < parte.quantita; i++) {
                 listaparti.push(parte);
             }
         });
         this.listaparti = listaparti;
         this.operazioni = operazioni;
+
+        this.ok = true;
     }
 
     btnOperazione() {
-        inventario.inventario.find(x=> x.elemento.nome === this.listaparti[this.operazione].elemento.nome).quantita-=1;
-
-        this.operazione += 1;
-        if (this.operazione > this.operazioni-1) {
-            this.operazione = 0;
-            inventarioManufatti.inventario.find(x=> x.elemento.nome === this.nome).quantita+=1;
+        if (inventario.inventario.find(x => x.elemento.nome === this.listaparti[this.operazione].elemento.nome).quantita > 0) {
+            this.ok = true;
+            inventario.inventario.find(x => x.elemento.nome === this.listaparti[this.operazione].elemento.nome).quantita -= 1;
+            this.operazione += 1;
+            if (this.operazione > this.operazioni - 1) {
+                this.operazione = 0;
+                inventarioManufatti.inventario.find(x => x.elemento.nome === this.nome).quantita += 1;
+            }
+        }
+        if (inventario.inventario.find(x => x.elemento.nome === this.listaparti[this.operazione].elemento.nome).quantita == 0) {
+            this.ok = false;
         }
     }
 }
@@ -245,21 +252,24 @@ class InventarioManufatti {
             operazione.innerHTML = ConvertiStelle(manufatto.elemento.operazione, manufatto.elemento.operazioni);
             operazione.className = "operazione";
 
-            let add = document.createElement("button");
-            add.onclick = function () {
-                manufatto.elemento.btnOperazione();
-                UpdateScreen();
-            };
-
-            add.innerHTML = "Costruisci";
-            add.className = "button buttonAdd";
-
             el.appendChild(quantita);
             el.appendChild(nome);
             el.appendChild(vendita);
             el.appendChild(parti);
             el.appendChild(operazione);
-            el.appendChild(add);
+
+            // USARE CONTROLLO DELLE QUANTITA E NON USARE UNA VARIABILE
+            if (manufatto.elemento.ok == true) {
+                let add = document.createElement("button");
+                add.onclick = function () {
+                    manufatto.elemento.btnOperazione();
+                    UpdateScreen();
+                };
+
+                add.innerHTML = "Costruisci";
+                add.className = "button buttonAdd";
+                el.appendChild(add);
+            }
 
             manufatti_div.appendChild(el);
         });
