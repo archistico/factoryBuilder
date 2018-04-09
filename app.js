@@ -8,6 +8,22 @@ function pad(n, width, z) {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
+function ConvertiStelle(eseguite, operazioni) {
+    let charEseguite = '*';
+    let charNonEseguite = '-';
+    let risultato = '';
+
+    for (let i = 0; i < operazioni; i++) {
+        if (i < eseguite) {
+            risultato += charEseguite;
+        } else {
+            risultato += charNonEseguite;
+        }
+    }
+
+    return risultato;
+}
+
 class Elemento {
     constructor(id, nome, acquisto, vendita) {
         this.id = id;
@@ -74,10 +90,6 @@ class Inventario {
             quantita.innerHTML = 'Quantità: ' + pad(elementoInventario.quantita, 4);
             quantita.className = "quantita";
 
-            // let id = document.createElement("div");
-            // id.innerHTML = pad(elementoInventario.elemento.id, 4);
-            // id.className = "id";
-
             let nome = document.createElement("div");
             nome.innerHTML = elementoInventario.elemento.nome
             nome.className = "nome";
@@ -113,7 +125,6 @@ class Inventario {
             remove.className = "button buttonRemove";
 
             el.appendChild(quantita);
-            // el.appendChild(id);
             el.appendChild(nome);
             el.appendChild(acquisto);
             el.appendChild(vendita);
@@ -158,14 +169,21 @@ class Manufatto {
         this.nome = nome;
         this.vendita = vendita;
         this.parti = parti;
+        this.operazione = 0;
+        this.operazioni = 0;
+
+        let operazioni = 0;
+        this.parti.forEach(function (parte) {
+            operazioni += parte.quantita;
+        })
+        this.operazioni = operazioni;
     }
 
-    toString() {
-        let parti = '';
-        this.parti.forEach(function (parte) {
-            log(parte);
-        });
-        return 'nome: ' + pad(this.nome, 4) + ' \t| prezzo di vendita: € ' + pad(this.vendita.toFixed(2), 4);
+    btnOperazione() {
+        this.operazione += 1;
+        if (this.operazione > this.operazioni-1) {
+            this.operazione = 0;
+        }
     }
 }
 
@@ -209,18 +227,19 @@ class InventarioManufatti {
 
             // Parti
             let parti = document.createElement("div");
-            manufatto.elemento.parti.forEach(function(parte) {
-                parti.innerHTML += parte.elemento.nome + ': ' + parte.quantita.toFixed(0)+'<br>';
+            manufatto.elemento.parti.forEach(function (parte) {
+                parti.innerHTML += parte.elemento.nome + ': ' + parte.quantita.toFixed(0) + '<br>';
             })
             parti.className = 'parti';
 
+            let operazione = document.createElement('div');
+            operazione.innerHTML = ConvertiStelle(manufatto.elemento.operazione, manufatto.elemento.operazioni);
+            operazione.className = "operazione";
+
             let add = document.createElement("button");
-            add.onclick = function () { 
-                if(inventarioManufatti.quantita<9999) {
-                    //elementoInventario.btnAdd();
-                    //portafoglio.Remove(elementoInventario.elemento.acquisto); 
-                }
-                UpdateScreen(); 
+            add.onclick = function () {
+                manufatto.elemento.btnOperazione();
+                UpdateScreen();
             };
 
             add.innerHTML = "Costruisci";
@@ -230,6 +249,7 @@ class InventarioManufatti {
             el.appendChild(nome);
             el.appendChild(vendita);
             el.appendChild(parti);
+            el.appendChild(operazione);
             el.appendChild(add);
 
             manufatti_div.appendChild(el);
@@ -276,7 +296,7 @@ portafoglio.Visualize();
  */
 
 let scatolaLegno = new ElementoInventario(legno, 6);
-let scatolaChiodi = new ElementoInventario(chiodi, 6);
+let scatolaChiodi = new ElementoInventario(chiodi, 1);
 let calcestruzzoCemento = new ElementoInventario(cemento, 2);
 let calcestruzzoAcqua = new ElementoInventario(acqua, 1);
 let calcestruzzoSabbia = new ElementoInventario(sabbia, 3);
