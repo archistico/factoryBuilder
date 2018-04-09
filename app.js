@@ -187,6 +187,16 @@ class Manufatto {
         this.ok = true;
     }
 
+    Verifica() {
+        let t = inventario.inventario.find(x => x.elemento.nome === this.listaparti[this.operazione].elemento.nome).quantita;
+        if (t > 0) {
+            this.ok = true;
+        }
+        if (t == 0) {
+            this.ok = false;
+        }
+    }
+
     btnOperazione() {
         if (inventario.inventario.find(x => x.elemento.nome === this.listaparti[this.operazione].elemento.nome).quantita > 0) {
             this.ok = true;
@@ -226,6 +236,9 @@ class InventarioManufatti {
         manufatti_div.innerHTML = null;
 
         this.inventario.forEach(function (manufatto) {
+
+            manufatto.elemento.Verifica()
+
             let el = document.createElement("div");
             el.className = "elemento";
 
@@ -258,7 +271,6 @@ class InventarioManufatti {
             el.appendChild(parti);
             el.appendChild(operazione);
 
-            // USARE CONTROLLO DELLE QUANTITA E NON USARE UNA VARIABILE
             if (manufatto.elemento.ok == true) {
                 let add = document.createElement("button");
                 add.onclick = function () {
@@ -320,7 +332,7 @@ let calcestruzzoCemento = new ElementoInventario(cemento, 2);
 let calcestruzzoAcqua = new ElementoInventario(acqua, 1);
 let calcestruzzoSabbia = new ElementoInventario(sabbia, 3);
 
-let scatola = new Manufatto('Scatola', 100, [scatolaLegno, scatolaChiodi]);
+let scatola = new Manufatto('Scatola', 20, [scatolaLegno, scatolaChiodi]);
 let calcestruzzo = new Manufatto('Calcestruzzo', 30, [calcestruzzoCemento, calcestruzzoAcqua, calcestruzzoSabbia]);
 
 /**
