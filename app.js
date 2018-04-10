@@ -223,6 +223,10 @@ class InventarioManufatti {
         this.inventario.push(elementoInventario);
     }
 
+    btnVendi() {
+        alert('Venduto');
+    }
+
     toString() {
         let risultato = '';
         this.inventario.forEach(function (elemento) {
@@ -278,10 +282,19 @@ class InventarioManufatti {
                     UpdateScreen();
                 };
 
-                add.innerHTML = "Costruisci";
+                add.innerHTML = "Fai";
                 add.className = "button buttonAdd";
                 el.appendChild(add);
             }
+
+            let remove = document.createElement("button");
+                remove.onclick = function () {
+                    UpdateScreen();
+                };
+
+                remove.innerHTML = "Vendi";
+                remove.className = "button buttonRemove";
+                el.appendChild(remove);
 
             manufatti_div.appendChild(el);
         });
