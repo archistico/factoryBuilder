@@ -282,29 +282,34 @@ class InventarioManufatti {
             el.appendChild(parti);
             el.appendChild(operazione);
 
+            let add = document.createElement("button");
             if (manufatto.elemento.ok == true) {
-                let add = document.createElement("button");
+                add.disabled = false;
                 add.onclick = function () {
                     manufatto.elemento.btnOperazione();
                     UpdateScreen();
                 };
-
-                add.innerHTML = "Fai";
-                add.className = "button buttonAdd";
-                el.appendChild(add);
+            } else {
+                add.disabled = true;
             }
+            add.innerHTML = "Fai";
+            add.className = "button buttonAdd";
+            el.appendChild(add);
 
+            let remove = document.createElement("button");
             if (manufatto.quantita > 0) {
-                let remove = document.createElement("button");
+                remove.disabled = false;
                 remove.onclick = function () {
                     inventarioManufatti.btnVendi(manufatto);
                     UpdateScreen();
                 };
-
-                remove.innerHTML = "Vendi";
-                remove.className = "button buttonRemove";
-                el.appendChild(remove);
+            } else {
+                remove.disabled = true;
             }
+            remove.innerHTML = "Vendi";
+            remove.className = "button buttonRemove";
+            el.appendChild(remove);
+
             manufatti_div.appendChild(el);
         });
     }
