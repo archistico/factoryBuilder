@@ -223,8 +223,15 @@ class InventarioManufatti {
         this.inventario.push(elementoInventario);
     }
 
-    btnVendi() {
-        alert('Venduto');
+    btnVendi(manufatto) {
+        this.inventario.forEach(function (el) {
+            if(el == manufatto) {
+                if(el.quantita>0) {
+                    el.quantita -=1;
+                    portafoglio.Add(el.elemento.vendita);
+                }                
+            }
+        });
     }
 
     toString() {
@@ -287,15 +294,17 @@ class InventarioManufatti {
                 el.appendChild(add);
             }
 
-            let remove = document.createElement("button");
+            if (manufatto.quantita > 0) {
+                let remove = document.createElement("button");
                 remove.onclick = function () {
+                    inventarioManufatti.btnVendi(manufatto);
                     UpdateScreen();
                 };
 
                 remove.innerHTML = "Vendi";
                 remove.className = "button buttonRemove";
                 el.appendChild(remove);
-
+            }
             manufatti_div.appendChild(el);
         });
     }
